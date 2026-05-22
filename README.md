@@ -14,7 +14,7 @@ Resonate solves this at the programming-model level:
 - Call `fn.Run(ctx, "webhook/"+event.EventID, event)` from the HTTP handler.
 - If the same `event_id` arrives again, `Run` finds the existing promise and returns its cached result — **the handler body never executes a second time**.
 
-No extra state, no database table, no distributed lock required. The deduplication window is the promise TTL (default 60 seconds, configurable).
+No extra state, no database table, no distributed lock required. The deduplication window is the root promise's timeout (default 24 hours, configurable per call); duplicate deliveries received inside that window return the cached result instead of re-running the handler.
 
 ## The code
 
